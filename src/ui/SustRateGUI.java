@@ -2,7 +2,7 @@ package ui;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
-import java.awt.GridLayout;
+import java.awt.FlowLayout;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
@@ -25,7 +25,6 @@ public class SustRateGUI extends JFrame{
 	private DefaultTableModel dtShow;
 	private JTable table;
 	
-
 	public SustRateGUI(){
 		
 		super("SustRate");
@@ -39,7 +38,7 @@ public class SustRateGUI extends JFrame{
 		JPanel east = Right();
 		
 		main.add(middle,BorderLayout.CENTER);
-		main.add(east,BorderLayout.EAST);
+		main.add(east,BorderLayout.SOUTH);
 		
 		setSize(500,500);
 		setVisible(true);
@@ -70,7 +69,8 @@ public class SustRateGUI extends JFrame{
 	
 	public JPanel Right(){
 		
-		JPanel right = new JPanel(new GridLayout(3,1));
+		JPanel right = new JPanel(new FlowLayout(FlowLayout.CENTER));
+
 		
 		TitledBorder title = BorderFactory.createTitledBorder(border,"Options");
 		right.setBorder(title);
@@ -82,8 +82,6 @@ public class SustRateGUI extends JFrame{
 		right.add(bOpen);
 		right.add(bCalculate);
 		right.add(bSave);
-		
-		
 		
 		return right;
 	}
