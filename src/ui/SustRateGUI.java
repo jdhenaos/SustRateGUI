@@ -2,6 +2,7 @@ package ui;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
+import java.awt.GridLayout;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
@@ -35,8 +36,10 @@ public class SustRateGUI extends JFrame{
 		border = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
 		
 		JPanel middle = Center();
+		JPanel east = Right();
 		
 		main.add(middle,BorderLayout.CENTER);
+		main.add(east,BorderLayout.EAST);
 		
 		setSize(500,500);
 		setVisible(true);
@@ -65,6 +68,25 @@ public class SustRateGUI extends JFrame{
 		return center;
 	}
 	
+	public JPanel Right(){
+		
+		JPanel right = new JPanel(new GridLayout(3,1));
+		
+		TitledBorder title = BorderFactory.createTitledBorder(border,"Options");
+		right.setBorder(title);
+		
+		bOpen = new JButton("Open");
+		bSave = new JButton("Save");
+		bCalculate = new JButton("Calculate");
+		
+		right.add(bOpen);
+		right.add(bCalculate);
+		right.add(bSave);
+		
+		
+		
+		return right;
+	}
 	
 	class Close implements WindowListener{
 
