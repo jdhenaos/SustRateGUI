@@ -3,11 +3,15 @@ package ui;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.File;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -24,6 +28,8 @@ public class SustRateGUI extends JFrame{
 	private JButton bOpen, bSave, bCalculate;
 	private DefaultTableModel dtShow;
 	private JTable table;
+	private File infile;
+	private JFileChooser jChooser;
 	
 	public SustRateGUI(){
 		
@@ -40,7 +46,9 @@ public class SustRateGUI extends JFrame{
 		main.add(middle,BorderLayout.CENTER);
 		main.add(east,BorderLayout.SOUTH);
 		
-		setSize(500,500);
+		bOpen.addActionListener(new Opener());
+		
+		setSize(900,500);
 		setVisible(true);
 		
 		this.addWindowListener(new Close());
@@ -59,8 +67,16 @@ public class SustRateGUI extends JFrame{
 		
 		JScrollPane scroll = new JScrollPane(table);
 		
-		dtShow.addColumn("First ID");
-		dtShow.addColumn("Second ID");
+		dtShow.addColumn("First_ID");
+		dtShow.addColumn("Second_ID");
+		dtShow.addColumn("P1ij");
+		dtShow.addColumn("P2ij");
+		dtShow.addColumn("Qij");
+		dtShow.addColumn("GAPij");
+		dtShow.addColumn("K1");
+		dtShow.addColumn("K2");
+		dtShow.addColumn("Bij");
+		dtShow.addColumn("K3");
 		
 		center.add(scroll,BorderLayout.CENTER);
 		
@@ -84,6 +100,21 @@ public class SustRateGUI extends JFrame{
 		right.add(bSave);
 		
 		return right;
+	}
+	
+	class Opener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			
+			jChooser = new JFileChooser();
+			jChooser.showOpenDialog(bOpen);
+			
+			infile = jChooser.getSelectedFile();
+			
+		}
+		
 	}
 	
 	class Close implements WindowListener{
