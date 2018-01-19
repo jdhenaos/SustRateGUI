@@ -1,19 +1,22 @@
 package logic;
 
 import java.util.ArrayList;
+import java.util.Vector;
 
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class CalcRate {
 	
 	private ArrayList<String> joiner;
 	private double A,T,C,G,GAP,gGAP,gA,gC,gT,gG,gR,gY,P1,P2,Q,Z,K1,K2,B,K3;
+	private Vector<Object> info;
 
 	public CalcRate(ArrayList<String> joiner){
 		this.setJoiner(joiner);
 	}
 	
-	public void some(DefaultTableModel shower) throws Exception{
+	public void some(DefaultTableModel shower){
 		
 		for(int i = 1; i < joiner.size(); i+=2){
 			A = 0.0;
@@ -33,7 +36,7 @@ public class CalcRate {
 				}else if(joiner.get(i).charAt(j) == '-'){
 					GAP++;
 				}else{
-					throw new Exception("Possible Ns in the sequences");
+					JOptionPane.showMessageDialog(null, "Possible Ns in the sequences","ERROR",JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			
@@ -92,16 +95,20 @@ public class CalcRate {
 			B = Q/(4.0*(double) (gR*gY*gGAP));
 			K3 = Z/(4.0*(double) (gR*gY*gGAP));
 			
-			System.out.println(joiner.get(a));
-			System.out.println(joiner.get(a+2));
-			System.out.println(Double.toString(P1));
-			System.out.println(Double.toString(P2));
-			System.out.println(Double.toString(Q));
-			System.out.println(Double.toString(Z));
-			System.out.println(Double.toString(K1));
-			System.out.println(Double.toString(K2));
-			System.out.println(Double.toString(B));
-			System.out.println(Double.toString(K3));
+			info = new Vector<Object>();
+			
+			info.add(joiner.get(a));
+			info.add(joiner.get(a+2));
+			info.add(Double.toString(P1));
+			info.add(Double.toString(P2));
+			info.add(Double.toString(Q));
+			info.add(Double.toString(Z));
+			info.add(Double.toString(K1));
+			info.add(Double.toString(K2));
+			info.add(Double.toString(B));
+			info.add(Double.toString(K3));
+			
+			shower.addRow(info);
 		}
 	}
 	

@@ -154,12 +154,7 @@ public class SustRateGUI extends JFrame{
 					}
 					
 					result = new CalcRate(joiner);
-					try {
-						result.some(dtShow);
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						JOptionPane.showMessageDialog(null,"Invalid file" + e1.getMessage(),"ERROR",JOptionPane.ERROR_MESSAGE);
-					}
+					result.some(dtShow);
 					
 					buffer.close();
 					
