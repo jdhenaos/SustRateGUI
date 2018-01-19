@@ -7,12 +7,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -21,15 +27,21 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
+import logic.CalcRate;
+
 public class SustRateGUI extends JFrame{
 	
 	private static final long serialVersionUID = 1L;
 	private Border border;
 	private JButton bOpen, bSave, bCalculate;
-	private DefaultTableModel dtShow;
+	public DefaultTableModel dtShow;
 	private JTable table;
 	private File infile;
 	private JFileChooser jChooser;
+	static FileReader reader;
+	private static String line;
+	private static ArrayList<String> joiner = new ArrayList<String>();
+	static CalcRate result;
 	
 	public SustRateGUI(){
 		
@@ -47,6 +59,7 @@ public class SustRateGUI extends JFrame{
 		main.add(east,BorderLayout.SOUTH);
 		
 		bOpen.addActionListener(new Opener());
+		bCalculate.addActionListener(new Calculator());
 		
 		setSize(900,500);
 		setVisible(true);
@@ -112,6 +125,52 @@ public class SustRateGUI extends JFrame{
 			jChooser.showOpenDialog(bOpen);
 			
 			infile = jChooser.getSelectedFile();
+			
+		}
+		
+	}
+	
+	class Calculator implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			
+			if(infile.canRead()){
+				try {
+					
+					BufferedReader buffer = new BufferedReader(reader = new FileReader(infile));
+					
+					while((line = buffer.readLine()) != null){
+						if(line.startsWith(">")){
+							joiner.add(line);
+						}else{
+							if(joiner.get(joiner.size()-1).startsWith(">")){
+								joiner.add(line);
+							}else{
+								joiner.set(joiner.size()-1, joiner.get(joiner.size()-1)+line);
+							}
+						}
+					}
+					
+					result = new CalcRate(joiner);
+					try {
+						result.some(dtShow);
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						JOptionPane.showMessageDialog(null,"Invalid file" + e1.getMessage(),"ERROR",JOptionPane.ERROR_MESSAGE);
+					}
+					
+					buffer.close();
+					
+				} catch (FileNotFoundException e1) {
+					// TODO Auto-generated catch block
+					JOptionPane.showMessageDialog(null,"File not found" + e1.getMessage(),"ERROR",JOptionPane.ERROR_MESSAGE);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					JOptionPane.showMessageDialog(null,"Invalid file" + e1.getMessage(),"ERROR",JOptionPane.ERROR_MESSAGE);
+				}
+			}
 			
 		}
 		
