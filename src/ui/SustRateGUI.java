@@ -11,6 +11,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -36,12 +37,13 @@ public class SustRateGUI extends JFrame{
 	private JButton bOpen, bSave, bCalculate;
 	public DefaultTableModel dtShow;
 	private JTable table;
-	private File infile;
-	private JFileChooser jChooser;
+	private File infile, outfile;
+	private JFileChooser jChooser, jOuter;
 	static FileReader reader;
 	private static String line;
 	private static ArrayList<String> joiner = new ArrayList<String>();
 	static CalcRate result;
+	private FileWriter wSave;
 	
 	public SustRateGUI(){
 		
@@ -60,6 +62,7 @@ public class SustRateGUI extends JFrame{
 		
 		bOpen.addActionListener(new Opener());
 		bCalculate.addActionListener(new Calculator());
+		bSave.addActionListener(new Saver());
 		
 		setSize(900,500);
 		setVisible(true);
@@ -167,6 +170,53 @@ public class SustRateGUI extends JFrame{
 				}
 			}
 			
+			bCalculate.setEnabled(false);
+			bOpen.setEnabled(false);
+			
+		}
+		
+	}
+	
+	class Saver implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			if(table.getRowCount() > 0){
+				jOuter = new JFileChooser();
+				int dialog = jOuter.showSaveDialog(bSave);
+				outfile = jOuter.getSelectedFile();
+				
+				if(dialog == JFileChooser.APPROVE_OPTION){
+					if(outfile != null){
+						try {
+							wSave = new FileWriter(outfile);
+							
+							String header = "First_ID"+"\t"+"Second_ID"+"\t"+"P1ij"+"\t"+"P2ij"+"\t"+"Qij"+"\t"+
+									"GAPij"+"\t"+"K1"+"\t"+"K2"+"\t"+"Bij"+"\t"+"K3"+"\n";
+							
+							wSave.write(header);
+							
+							for(int i = 0; i < table.getRowCount();i++){
+								for(int j = 0; j < table.getColumnCount();j++){
+									wSave.write(table.getModel().getValueAt(i, j)+"\t");
+								}
+								wSave.write("\n");
+							}
+							
+							wSave.close();
+							JOptionPane.showMessageDialog(null, "Saved successfully","INFORMATION",JOptionPane.INFORMATION_MESSAGE);
+							System.exit(0);
+
+							
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							JOptionPane.showMessageDialog(null,"File not created" + e1.getMessage(),"ERROR",JOptionPane.ERROR_MESSAGE);
+						}
+						
+					}
+				}
+			}
 		}
 		
 	}

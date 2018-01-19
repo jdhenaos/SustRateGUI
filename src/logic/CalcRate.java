@@ -37,6 +37,7 @@ public class CalcRate {
 					GAP++;
 				}else{
 					JOptionPane.showMessageDialog(null, "Possible Ns in the sequences","ERROR",JOptionPane.ERROR_MESSAGE);
+					System.exit(0);
 				}
 			}
 			
@@ -110,6 +111,7 @@ public class CalcRate {
 			
 			shower.addRow(info);
 		}
+		
 	}
 	
 	public ArrayList<String> getJoiner() {
